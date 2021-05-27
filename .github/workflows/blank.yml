@@ -14,6 +14,8 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Autotag
         uses: DanySK/semver-autotag-action@master
       - name: Create Release
