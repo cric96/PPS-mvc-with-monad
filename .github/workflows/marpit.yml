@@ -12,6 +12,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
+permissions: read-all
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -28,17 +29,28 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: Compile marpit
+      - name: Compile pdf marpit
         run: npx @marp-team/marp-cli presentation.md -o ./output.pdf
+      - name: Compile html marpit
+        run: npx @marp-team/marp-cli presentation.md -o ./public/index.html
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact.pdf
+          path: ${{ github.workspace }}/output.pdf
       - name: Autotag
         uses: DanySK/semver-autotag-action@master
-      - name: Fetch tags
-        shell: bash
-        run: git fetch --tags -f
-      - name: Deploy
+      - name: Release PDF 
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: true
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG=$(git describe --tags --exact-match HEAD)
-          hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true
-          hub release edit -m '' -a output.pdf "$TAG"
+      - name: Deploy site
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
