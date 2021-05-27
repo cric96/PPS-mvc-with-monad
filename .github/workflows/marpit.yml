@@ -30,17 +30,11 @@ jobs:
         with:
           node-version: '14'
       - run: npx @marp-team/marp-cli presentation.md -o output.pdf
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        name: Create Release
+      - uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          artifacts: "release.tar.gz,output.pdf"
           body: |
             Changes in this Release
-            - First Change
-            - Second Change
-          draft: true
-          artifacts: "release.tar.gz,output.pdf"
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
