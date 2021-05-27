@@ -41,4 +41,4 @@ jobs:
         run: |
           TAG=$(git describe --tags --exact-match HEAD)
           hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true
-          hub release edit -m '' -a presentation.pdf "$TAG"
+          hub release edit -m '' -a output.pdf "$TAG"
