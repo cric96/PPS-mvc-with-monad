@@ -36,5 +36,4 @@ jobs:
           artifacts: "release.tar.gz,output.pdf"
           body: |
             Changes in this Release
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Release
+          token: ${{ secrets.GITHUB_TOKEN }} 
