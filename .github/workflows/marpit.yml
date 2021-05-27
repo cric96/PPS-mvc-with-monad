@@ -33,7 +33,7 @@ jobs:
         name: Create Release
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "release.tar.gz,output.pdf"
+          artifacts: "output.pdf"
           tag: ${{ github.ref }}
           body: |
             Changes in this Release
