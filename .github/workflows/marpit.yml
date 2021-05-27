@@ -29,12 +29,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npx @marp-team/marp-cli presentation.md -o output.pdf
-        name: Create Release
-      - uses: actions/upload-artifact@v2
-        with:
-          name: presentation.pdf
-          path: ./output.pdf
+      - name: Compile marpit
+        run: npx @marp-team/marp-cli presentation.md -o ./output.pdf
       - name: Autotag
         uses: DanySK/semver-autotag-action@master
       - name: Deploy
