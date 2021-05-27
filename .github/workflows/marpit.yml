@@ -31,7 +31,7 @@ jobs:
       - name: Compile marpit
         run: npx @marp-team/marp-cli presentation.md -o ./output.pdf
       - name: Upload presentation
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: presentation.pdf
           path: ${{ github.workspace }}/output.pdf
