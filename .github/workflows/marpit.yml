@@ -37,15 +37,13 @@ jobs:
           path: ${{ github.workspace }}/output.pdf
       - name: Autotag
         uses: DanySK/semver-autotag-action@master
-      - name: Deploy
-        if: ${{ startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master' }}
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: true
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ github.ref }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG=$(git describe --tags --exact-match HEAD)
-          hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true
-          while IFS= read -r file; do
-            pdf="${file%.*}.pdf"
-            echo "Delivering file $pdf"
-            gh release upload "$TAG" "$pdf" --clobber
-          done <"success-list"
+          GITHUB_TOKEN: ${{ github.token }}
