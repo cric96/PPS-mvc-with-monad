@@ -34,7 +34,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: my-artifact.pdf
-          path: path/to/artifact/world.txt
+          path: ${{ github.workspace }}/output.pdf
       - name: Autotag
         uses: DanySK/semver-autotag-action@master
       - name: Deploy
