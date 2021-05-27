@@ -35,9 +35,6 @@ jobs:
         with:
           name: presentation.pdf
           path: ${{ github.workspace }}/output.pdf
-      - name: Fetch tags
-        shell: bash
-        run: git fetch --tags -f
       - name: Autotag
         uses: DanySK/semver-autotag-action@master
       - name: Deploy
