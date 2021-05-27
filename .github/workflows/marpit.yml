@@ -31,6 +31,10 @@ jobs:
           node-version: '14'
       - run: npx @marp-team/marp-cli presentation.md -o output.pdf
         name: Create Release
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: ./output.pdf
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "output.pdf"
