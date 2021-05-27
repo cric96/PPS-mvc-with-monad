@@ -31,6 +31,10 @@ jobs:
           node-version: '14'
       - name: Compile marpit
         run: npx @marp-team/marp-cli presentation.md -o ./output.pdf
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact.pdf
+          path: path/to/artifact/world.txt
       - name: Autotag
         uses: DanySK/semver-autotag-action@master
       - name: Deploy
