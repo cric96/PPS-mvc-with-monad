@@ -17,7 +17,7 @@ footer: 'Gianluca Aguzzi, 2021'
 # Goals
 - show an end-to-end **functional** application
 - leverage some well-consolidated functional library
-- understandar limations (if any) and the improvement
+- understand limitations (if any) and the improvement
 
 ---
 # **Task**
@@ -45,9 +45,9 @@ object App extends TaskApp {
 ```
 ---
 # **Observable**
->  a data type for modeling and processing asynchronous and reactive streaming of events with non-blocking back-pressure.
+>  a data type for modelling and processing asynchronous and reactive streaming of events with non-blocking back-pressure.
 
-We use it to implements the [Functional Reactive Programming](http://wiki.haskell.org/Functional_Reactive_Programming)
+We use it to implement the [Functional Reactive Programming](http://wiki.haskell.org/Functional_Reactive_Programming)
 
 ---
 # Books
