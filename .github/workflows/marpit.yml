@@ -40,4 +40,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "presentation.pdf"
+          tag: $(git describe --tags --exact-match HEAD)
           token: ${{ secrets.GITHUB_TOKEN }}
