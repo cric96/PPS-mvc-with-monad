@@ -24,22 +24,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - uses: Klemensas/action-autotag@stable
-        with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          tag_prefix: "v"
+  
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+
       - name: Compile marpit
         run: npx @marp-team/marp-cli presentation.md -o ./output.pdf
+      
+      - name: Upload presentation
       - uses: actions/upload-artifact@v2
         with:
           name: presentation.pdf
           path: ${{ github.workspace }}/output.pdf
-      - name: release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "presentation.pdf"
-          token: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Fetch tags
+        shell: bash
+        run: git fetch --tags -f
+      
+      - name: Autotag
+        uses: DanySK/semver-autotag-action@master
+      
+      - name: Deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(git describe --tags --exact-match HEAD)
+          hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true
+          hub release edit -m '' -a presentation.pdf "$TAG"
