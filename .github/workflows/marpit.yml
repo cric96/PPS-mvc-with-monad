@@ -35,10 +35,15 @@ jobs:
         with:
           name: presentation.pdf
           path: ./output.pdf
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "presentation.pdf"
-          tag: ${{ github.ref }}
-          body: |
-            Changes in this Release
-          token: ${{ secrets.GITHUB_TOKEN }} 
+      - name: Deploy
+        if: ${{ startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(git describe --tags --exact-match HEAD)
+          hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true
+          while IFS= read -r file; do
+            pdf="${file%.*}.pdf"
+            echo "Delivering file $pdf"
+            gh release upload "$TAG" "$pdf" --clobber
+          done <"success-list"
