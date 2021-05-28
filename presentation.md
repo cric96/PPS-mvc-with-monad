@@ -96,7 +96,6 @@ public class TicTacToeGame implements Game {
     public static TicTacToeGame playWith(
         final TicTacToe ticTacToe, 
         final TicTacToeView ticTacToeView) {...}
-
     ....
 
 ```
@@ -111,9 +110,21 @@ public static void main(String[] args) {
 }
 ```
 ---
-## Clean enoght right?
+## Clean enogh right?
 ### What do you think?
+
+Try to rethink using "functional" abstractions 
+
+(Monads? Functions? Algebric Data Type?)
+
 ---
+# Libraries
+
+- [Cats](): provides abstractions for functional programming in the Scala programming language
+- [Monix](): high-performance Scala / Scala.js library for composing **asynchronous**, **event-based** programs
+
+---
+<!-- header : Monix abstraction -->
 # **Task**
 > Task represents a specification for a possibly lazy or asynchronous computation, which when executed will produce an A as a result, along with possible side-effects.
 ---
@@ -131,19 +142,41 @@ object Task {
 }
 ```
 ---
-## A Little taste
+## [A Little taste](https://scalafiddle.io/sf/C4Qon6a/1)
 ```
-object App extends TaskApp {
-    def 
-}
+val scheduler = monix.execution.Scheduler.Implicits.global
+
+def someComputation(data : Long) : Task[Long] = 
+    Task.pure(data * 1000)
+
+def log(value : String) : Task[Unit] = Task { println(value) }
+
+val main = for {
+  data <- someComputation(4)
+  _ <- log(s"computations ends with value $data")
+} yield (data)
+
+main.runToFuture(scheduler)
 ```
 ---
 # **Observable**
 >  a data type for modelling and processing asynchronous and reactive streaming of events with non-blocking back-pressure.
 
-We use it to implement the [Functional Reactive Programming](http://wiki.haskell.org/Functional_Reactive_Programming)
+We use it to implement [Functional Reactive Programming](http://wiki.haskell.org/Functional_Reactive_Programming)
 
 ---
+
+# Functional Reactive Programming <!-- fit -->
+> The program is expressed as a reaction to its inputs, or as a flow of data.
+- [Functional Reactive Programming](https://www.manning.com/books/functional-reactive-programming)
+---
+
+# Functional Reactive Programming <!-- fit -->
+Out of this talk, If you are interested [Conal Elliot](http://conal.net/) makes a lot of materials about this topics.
+
+---
+
+
 # Books
 
 1. **[Scala with Cats Book](https://underscore.io/books/scala-with-cats/)**
