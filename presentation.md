@@ -21,6 +21,11 @@ footer: 'Gianluca Aguzzi, 2021'
 - understand limitations (if any) and the improvements
 
 ---
+## Repository
+
+https://github.com/cric96/scala-functional-gui <!-- fit -->
+
+---
 # Target Application
 ## **Tic Tac Toe**
 
@@ -99,8 +104,8 @@ public class TicTacToeGame implements Game {
 ## Putting all togheter
 ```
 public static void main(String[] args) {
-    final TicTacToeView view = SwingView.createAndShow();
-    final TicTacToe model = TicTacToeFactory.empty();
+    final TicTacToeView view = SwingView.createAndShow(800, 600);
+    final TicTacToe model = TicTacToeFactory.startX();
     final Game game = TicTacToeGame.playWith(model, view);
     game.start();
 }
