@@ -175,7 +175,24 @@ We use it to implement [Functional Reactive Programming](http://wiki.haskell.org
 Out of this talk, If you are interested [Conal Elliot](http://conal.net/) makes a lot of materials about this topics.
 
 ---
+#### [Observable in action](https://scalafiddle.io/sf/0uDr1Cr/1)
+```
+val textInput = input(placeholder := "write text here").render
+//unsafe "boundary"
+val subject = PublishSubject[String]() 
+textInput.oninput = _ => subject.onNext(textInput.value)
+val result = p.render
+Fiddle.print(div(textInput), result)
+//safe part
+val inputStream = subject.share //API of the model
+val computation = for {
+  text <- inputStream
+  _ <- Observable.pure(result.innerText = text)
+} yield()
 
+computation.foreachL(a => a).runToFuture
+```
+---
 
 # Books
 
